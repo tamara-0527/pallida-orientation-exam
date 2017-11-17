@@ -4,6 +4,7 @@ let ulElement = document.querySelector('ul');
 let tableElement = document.querySelector('tbody');
 let buttonForSearching = document.getElementById('searching');
 let inputTheString = document.getElementsByTagName('input');
+buttonForSearching.addEventListener('click', ListTheResult);
 
 function ajax (command, url, callback) {
   let xhr = new XMLHttpRequest();
@@ -11,7 +12,8 @@ function ajax (command, url, callback) {
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = function() {
   console.log(xhr.responseText);
-    callback(JSON.parse(xhr.responseText));
+    var data = JSON.parse(xhr.responseText);
+    callback(data);
   };
   xhr.send();
 };
@@ -28,8 +30,18 @@ function handleQueryResult(findTheResult) {
   });
 };
 
+function ListTheResult() {
+  console.log('click event');
+  var searchedElement = inputTheString.value;
+  if (inputTheString === '') {
+      alert('Fill the input field!');
+  } else if (inputTheString === 'police') {
+      listDetails();
+  }
+}
+
 function listDetails(response) {
-    response.licence_plates.forEach(function(element) {
+    response.plates.forEach(function(element) {
         const listData = '<tr><td>' + element.plate +
                          '</td><td>' + element.car_brand +
                          '</td><td>' + element.car_model +
@@ -49,4 +61,4 @@ function listByFilter(response) {
 };;
 
 ajax('GET', 'http://localhost:8080/search', appendResults);
-// ajax('GET', '/search/:brand', listByFilter);
+ajax('GET', '/search/:brand', ListTheResult);

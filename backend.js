@@ -28,11 +28,13 @@ app.get('/', function(req, res) {
 
 app.get('/search', function(req, res) {
   connection.query(plates, function(err, rows) {
-    if (/[^a-zA-Z0-9]/.test(req.query) || req.query.length > 7) {
+    if (err || req.query.length > 7) {
       return res.send({'result': 'error', 'message': 'invalid input'});
+    } else if (/[^a-zA-Z0-9]/.test(req.query)) {
+        res.json({'plates': rows});
     };
-    res.send({'plates': rows});
   });
+  console.log('Data received from database');
 });
 
 
