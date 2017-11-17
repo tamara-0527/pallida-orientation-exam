@@ -29,9 +29,9 @@ app.get('/', function(req, res) {
 app.get('/search', function(req, res) {
   connection.query(plates, function(err, rows) {
     if (/[^a-zA-Z0-9]/.test(req.query) || req.query.length > 7) {
-      console.log(res.send({ "result": "error", "message": "invalid input" }));
+      return res.send({'result': 'error', 'message': 'invalid input'});
     };
-    res.send({"plates": rows});
+    res.send({'plates': rows});
   });
 });
 
@@ -44,10 +44,10 @@ app.get('/search/:brand', function(req, res) {
   connection.query('SELECT car_brand FROM licence_plates ' + searchParameter + ' = ' + searchValue,  function(err, result, fields) {
     console.log(req.query.car_brand);
     result.forEach(element => {
-      data.push(element);
+      data.push(element.car_brand);
     });
     res.send(data);
   })
 });
 
-app.listen(8080, () => console.log("server running"));
+app.listen(8080, () => console.log('server running'));
