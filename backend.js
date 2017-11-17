@@ -10,7 +10,7 @@ var connection = mysql.createConnection({
   host : 'localhost',
   user: 'root',
   password: 'mysql',
-  database: 'music'
+  database: 'licences'
 });
 connection.connect((err) => {
   if(err) {
@@ -21,7 +21,7 @@ connection.connect((err) => {
 });
 
 app.get('/', function(req, res) {
-  res.sendFile(__dirname + '/template.html');
+  res.sendFile(__dirname + '/index.html');
 });
 
 
