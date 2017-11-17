@@ -40,8 +40,8 @@ function ListTheResult() {
   }
 }
 
-function listDetails(response) {
-    response.plates.forEach(function(element) {
+function listDetails(res) {
+    res.plates.forEach(function(element) {
         const listData = '<tr><td>' + element.plate +
                          '</td><td>' + element.car_brand +
                          '</td><td>' + element.car_model +
@@ -52,9 +52,8 @@ function listDetails(response) {
     });
 };
 
-
-function listByFilter(response) {
-    response.forEach(function(elements) {
+function listByFilter(res) {
+    res.forEach(function(elements) {
         const listedData = '<li>' + elements.car_brand + '</li>';
         ulElement.innerHTML += listedData;
     });

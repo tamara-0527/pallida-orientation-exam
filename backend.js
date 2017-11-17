@@ -37,7 +37,6 @@ app.get('/search', function(req, res) {
   console.log('Data received from database');
 });
 
-
 app.get('/search/:brand', function(req, res) {
   let searchParameter = req.query.car_brand;
   let searchValue = req.query[searchParameter];
