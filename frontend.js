@@ -2,8 +2,8 @@
 
 let ulElement = document.querySelector('ul');
 let tableElement = document.querySelector('tbody');
-const buttonForSearching = document.createElement('button');
-const inputTheString = document.createElement('input');
+let buttonForSearching = document.getElementById('searching');
+let inputTheString = document.getElementsByTagName('input');
 
 function ajax (command, url, callback) {
   let xhr = new XMLHttpRequest();
