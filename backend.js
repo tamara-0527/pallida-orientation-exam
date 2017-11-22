@@ -2,7 +2,7 @@
 
 var express = require('express');
 var mysql = require('mysql');
-var plates = 'SELECT car_brand FROM licence_plates';
+var plates = 'SELECT * FROM licence_plates WHERE plate LIKE ';
 
 var app = express();
 app.use('/', express.static('./'));
@@ -11,8 +11,8 @@ app.use(express.json());
 var connection = mysql.createConnection({
   host : 'localhost',
   user: 'root',
-  password: 'mysql',
-  database: 'licences'
+  password: 'a',
+  database: 'licence_plates'
 });
 connection.connect((err) => {
   if(err) {
@@ -27,25 +27,26 @@ app.get('/', function(req, res) {
 });
 
 app.get('/search', function(req, res) {
-  connection.query(plates, function(err, rows) {
-    if (err || req.query.length > 7) {
-      return res.send({'result': 'error', 'message': 'invalid input'});
-    } else if (/[^a-zA-Z0-9]/.test(req.query)) {
-        res.json({'plates': rows});
-    };
-  });
-  console.log('Data received from database');
+  let data = []
+  console.log(req.query.plate)
+  connection.query(plates + "\"%"+ req.query.plate +"%\"",  function(err, result, fields) {
+    console.log(result);
+    result.forEach(element => {
+      data.push(element);
+    });
+    res.send(data);
+  })
 });
 
 app.get('/search/:brand', function(req, res) {
-  let searchParameter = req.query.car_brand;
-  let searchValue = req.query[searchParameter];
-  console.log({searchParameter : searchValue});
   var data = [];
-  connection.query('SELECT car_brand FROM licence_plates ' + searchParameter + ' = ' + searchValue,  function(err, result, fields) {
-    console.log(req.query.car_brand);
+  console.log(req.params.brand);
+  let sqlQuery = 'SELECT * FROM licence_plates  WHERE car_brand=\"' + req.params.brand + '\";';
+  console.log(sqlQuery);
+  connection.query(sqlQuery,  function(err, result, fields) {
+    console.log(result);
     result.forEach(element => {
-      data.push(element.car_brand);
+      data.push(element);
     });
     res.send(data);
   })

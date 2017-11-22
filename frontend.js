@@ -2,8 +2,8 @@
 
 let ulElement = document.querySelector('ul');
 let tableElement = document.querySelector('tbody');
-let buttonForSearching = document.getElementById('searching');
-let inputTheString = document.getElementsByTagName('input');
+let buttonForSearching = document.getElementById('submit');
+let inputTheString = document.getElementById('searching');
 buttonForSearching.addEventListener('click', ListTheResult);
 
 function ajax (command, url, callback) {
@@ -33,6 +33,8 @@ function handleQueryResult(findTheResult) {
 function ListTheResult() {
   console.log('click event');
   var searchedElement = inputTheString.value;
+  console.log(searchedElement)
+  ajax('GET', 'http://localhost:8080/search?plate=' + searchedElement, listDetails)
   if (inputTheString === '') {
       alert('Fill the input field!');
   } else if (inputTheString === 'police') {
@@ -40,15 +42,18 @@ function ListTheResult() {
   }
 }
 
-function listDetails(res) {
-    res.plates.forEach(function(element) {
-        const listData = '<tr><td>' + element.plate +
+function listDetails(arr) {
+    let table = document.querySelector(".szia");
+    table.innerHTML = ""
+    arr.forEach(function(element) {
+      let listData = document.createElement("tr");
+      listData.innerHTML = '<td>' + element.plate +
                          '</td><td>' + element.car_brand +
                          '</td><td>' + element.car_model +
                          '</td><td>' + element.color +
                          '</td><td>' + element.year +
-                         '</td></tr>';
-        tableElement.innerHTML += listData;
+                         '</td>';
+        table.appendChild(listData);
     });
 };
 
@@ -59,5 +64,3 @@ function listByFilter(res) {
     });
 };;
 
-ajax('GET', 'http://localhost:8080/search', appendResults);
-ajax('GET', '/search/:brand', ListTheResult);
